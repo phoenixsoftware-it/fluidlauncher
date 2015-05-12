@@ -73,6 +73,7 @@ private:
     SlideShow* slideShowWidget;
     QTimer* inputTimer;
     QList<DemoApplication*> demoList;
+    bool noExit;
 
     bool loadConfig(QString configPath);
     void populatePictureFlow();

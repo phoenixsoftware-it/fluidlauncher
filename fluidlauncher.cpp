@@ -75,6 +75,8 @@ FluidLauncher::FluidLauncher(QStringList* args)
     const int ww = hh / 3 * 2;
     pictureFlowWidget->setSlideSize(QSize(ww, hh));
 
+    noExit = (args->indexOf("-noexit") >= 0);
+
     bool success;
     int configIndex = args->indexOf("-config");
     if ( (configIndex != -1) && (configIndex != args->count()-1) )
@@ -131,6 +133,9 @@ bool FluidLauncher::loadConfig(QString configPath)
                 .arg(reader.columnNumber())
                 .arg(reader.errorString());
     }
+
+    if (noExit)
+        return true;
 
     // Append an exit Item
     DemoApplication* exitItem = new DemoApplication(QString(), QLatin1String("Exit Embedded Demo"), QString(), QStringList());
@@ -221,7 +226,7 @@ void FluidLauncher::launchApplication(int index)
     // a delay upon returning, as items are reloaded.
     //pictureFlowWidget->clearCaches();
 
-    if (index == demoList.size() -1) {
+    if ((!noExit) && (index == demoList.size() -1)) {
         qApp->quit();
         return;
     }
